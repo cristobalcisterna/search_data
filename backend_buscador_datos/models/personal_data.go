@@ -15,7 +15,7 @@ type PersonalData struct {
 }
 
 func (p *PersonalData) GetByRut(db *pgxpool.Pool, rut string) (*PersonalData, error) {
-	// Consulta dinámica, obteniendo todas las columnas de la tabla `personal_data`
+	// Consulta dinámica para obtener todas las columnas como JSON
 	query := `
 		SELECT row_to_json(personal_data) 
 		FROM personal_data 
@@ -23,13 +23,21 @@ func (p *PersonalData) GetByRut(db *pgxpool.Pool, rut string) (*PersonalData, er
 	`
 
 	var result json.RawMessage
+	// Ejecutamos la consulta y escaneamos el resultado
 	err := db.QueryRow(context.Background(), query, rut).Scan(&result)
 
+	// Verificar si hay un error en la consulta
 	if err != nil {
+		if err.Error() == "no rows in result set" {
+			// Si no se encuentra ningún registro con ese rut, retornamos un error adecuado
+			log.Println("No datos encontrados para el RUT:", rut)
+			return nil, errors.New("datos no encontrados")
+		}
 		log.Println("Error al buscar por RUT:", err)
-		return nil, errors.New("datos no encontrados")
+		return nil, err
 	}
 
+	// Retornar los datos obtenidos como JSON
 	return &PersonalData{
 		Rut:  &rut,
 		Data: result,
