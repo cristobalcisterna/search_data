@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -20,11 +21,21 @@ func main() {
 
 	r := routes.SetupRouter(db.Pool)
 
+	// Configuración de CORS
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:5173", "http://172.18.0.4:5173"}, // Permite el frontend
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders: []string{"Content-Type", "Authorization"},
+	})
+
+	// Aplica el middleware CORS
+	handler := c.Handler(r)
+
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8000"
+		port = "8001" // Cambié el puerto a 8001 para evitar conflicto
 	}
 
 	log.Println("Servidor corriendo en :" + port)
-	log.Fatal(http.ListenAndServe(":"+port, r))
+	log.Fatal(http.ListenAndServe(":"+port, handler)) // Usa el handler con CORS
 }

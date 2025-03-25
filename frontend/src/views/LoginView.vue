@@ -22,74 +22,67 @@
             Iniciar sesión
           </button>
         </div>
-        <div class="text-center">
-          <router-link to="/modificar-contraseña"
-            >Olvidé la contraseña</router-link
-          >
-        </div>
-        <!--<span>¿No tiene una cuenta? <a href="">Regístrese</a></span>-->
-      </form>
+ </form>
     </main>
   </template>
-  
-
   <script>
-export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      errorMsg: "",
-    };
-  },
-  components: {},
-  methods: {
-    
-    login: async function () {
-      try {
-        let loginData = {
-          email: this.email,
-          password: this.password,
-        };
+  export default {
+    data() {
+      return {
+        email: "",
+        password: "",
+        errorMsg: "",
+      };
+    },
+    components: {},
+    methods: {
+      alertError(message) {
+        alert(message);
+      },
+      
+      login: async function () {
+        try {
+          let loginData = {
+            email: this.email,
+            password: this.password,
+          };
   
-        const response = await fetch("http://localhost:8000/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(loginData),
-        });
+          const response = await fetch("http://localhost:8001/api/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
+          });
   
-        if (!response.ok) {
-          throw new Error("Credenciales incorrectas");
+          if (!response.ok) {
+            // Si la respuesta es un error, mostramos un mensaje
+            throw new Error("Credenciales incorrectas");
+          }
+          const data = await response.json();
+          // Guardar token en localStorage
+          localStorage.setItem("jwt", data.token);
+  
+          // Decodificar el token para obtener rol (opcional)
+          const payload = JSON.parse(atob(data.token.split('.')[1]));
+  
+          // Validar rol
+          if (
+            payload.rol !== "admin" &&
+            payload.rol !== "evaluador"
+          ) {
+            alert("No puedes acceder con este usuario");
+            localStorage.removeItem("jwt");
+            return;
+          }
+  
+          // Redirigir al usuario a la vista de SearchData
+          this.$router.push({ name: 'searchData' });
+        } catch (error) {
+          console.error(error);
+          this.alertError("Credenciales incorrectas");
         }
-  
-        const data = await response.json();
-  
-        // Guardar token en localStorage
-        localStorage.setItem("jwt", data.token);
-  
-        // Decodificar el token para obtener rol (opcional)
-        const payload = JSON.parse(atob(data.token.split('.')[1]));
-  
-        // Validar rol
-        if (
-          payload.rol !== "admin" &&
-          payload.rol !== "evaluador"
-        ) {
-          alert("No puedes acceder con este usuario");
-          localStorage.removeItem("jwt");
-          return;
-        }
-  
-        // Redirigir
-        this.$router.push("/");
-      } catch (error) {
-        console.error(error);
-        this.alertError("Credenciales incorrectas o servidor caído");
       }
     }
-  }
-};
-</script>
-
+  };
+  </script>
