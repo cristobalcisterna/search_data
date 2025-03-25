@@ -9,7 +9,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type PersonalDataController struct {
+type StudentsPersonalDataController struct {
 	DB *pgxpool.Pool
 }
 
@@ -30,12 +30,12 @@ func (c *PersonalDataController) GetByRut(w http.ResponseWriter, r *http.Request
 */
 
 // Este es el controlador que manejará la consulta por RUT
-func (c *PersonalDataController) GetByRut(w http.ResponseWriter, r *http.Request) {
+func (c *StudentsPersonalDataController) GetByRut(w http.ResponseWriter, r *http.Request) {
 	// Obtener el RUT de los parámetros de la URL
 	rut := mux.Vars(r)["rut"]
 
 	// Crear una instancia del modelo de datos
-	dataModel := models.PersonalData{}
+	dataModel := models.StudentsPersonalData{}
 	// Llamar al método del modelo para obtener los datos por el RUT
 	record, err := dataModel.GetByRut(c.DB, rut)
 
@@ -51,8 +51,8 @@ func (c *PersonalDataController) GetByRut(w http.ResponseWriter, r *http.Request
 }
 
 // Registrar las rutas para la consulta
-func (c *PersonalDataController) RegisterRoutes(r *mux.Router) {
-	personalRouter := r.PathPrefix("/personal-data").Subrouter()
+func (c *StudentsPersonalDataController) RegisterRoutes(r *mux.Router) {
+	personalRouter := r.PathPrefix("/students-personal-data").Subrouter()
 	// Ruta para obtener los datos por RUT
 	personalRouter.HandleFunc("/{rut}", c.GetByRut).Methods("GET")
 }
