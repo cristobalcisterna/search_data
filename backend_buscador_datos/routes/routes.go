@@ -13,7 +13,7 @@ func SetupRouter(db *pgxpool.Pool) *mux.Router {
 
 	// Controladores
 	authController := controllers.AuthController{DB: db}
-	dataController := controllers.StudentsPersonalDataController{DB: db}
+	dataController := controllers.PersonalDataController{DB: db}
 
 	// Ruta pública
 	r.HandleFunc("/api/login", authController.Login).Methods("POST")

@@ -1,15 +1,16 @@
 <template>
+<!--
   <header class="header">
     <a
       v-if="auth.isAuthenticated"
       class="menu-btn"
       @click="menuExpanded = !menuExpanded"
     >
-      <img class="menu-icon" svg-inline src="@/assets/img/menu-ico.svg" />
+      <img class="menu-icon" src="/img/menu-ico.svg" />
     </a>
 
     <div @click="$router.push('/')" class="logo">
-      <img svg-inline src="@/assets/img/Usach SB.png" />
+      <img src="/img/Usach SB.png" />
     </div>
 
     <nav class="topnav" :aria-expanded="menuExpanded">
@@ -20,11 +21,6 @@
           </span>
         </div>
       </ul>
-
-      <user-menu-opts
-        v-if="auth.isAuthenticated"
-        class="user-menu"
-      ></user-menu-opts>
     </nav>
 
     <nav
@@ -36,21 +32,31 @@
         Usuario<svg class="svg-icon"><use xlink:href="#chevron-down" /></svg>
       </button>
 
-      <user-menu-opts @close="userExpanded = false"></user-menu-opts>
       <span style="color:white;">{{ auth.currentUser?.email }}</span>
     </nav>
   </header>
-
-  <RouterView />
+-->
+  <NuxtPage />
 </template>
 
 <script setup>
-import { RouterView } from 'vue-router'
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
-const auth = useAuthStore()
 
+const auth = useAuthStore()
 const menuExpanded = ref(false)
 const userExpanded = ref(false)
 </script>
+
+<style>
+/* Aquí puedes mantener tus estilos globales o importar tu CSS */
+
+
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa;
+}
+</style>

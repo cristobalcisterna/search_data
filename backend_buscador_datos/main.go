@@ -23,8 +23,8 @@ func main() {
 
 	// Configuración de CORS
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:5173", "http://172.18.0.4:5173"}, // Permite el frontend
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedOrigins: []string{"http://localhost:3000"}, // Permite el frontend
+		AllowedMethods: []string{"GET", "POST"},
 		AllowedHeaders: []string{"Content-Type", "Authorization"},
 	})
 

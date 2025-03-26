@@ -1,14 +1,13 @@
-# frontend/Dockerfile
-
-FROM node:20
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN rm -f package-lock.json && npm install
-
+FROM node:18.6.0 as build-stage
+WORKDIR /nuxtapp
 COPY . .
+RUN npm install
+RUN npm run build
 
-EXPOSE 5173
-
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+FROM node:18.6.0 as prod-stage
+WORKDIR /nuxtapp
+COPY --from=build-stage /nuxtapp/.output/ ./.output/
+COPY package*.json ./
+RUN npm install --production --prefer-offline --pure-lockfile --non-interactive
+EXPOSE 3000
+CMD [ "node", ".output/server/index.mjs" ]

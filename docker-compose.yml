@@ -40,9 +40,7 @@ services:
     build: ./frontend
     container_name: frontend_buscador
     ports:
-      - "5174:5173"
-    volumes:
-      - ./frontend:/app
+      - "3000:3000"
     depends_on:
       - backend
     networks:

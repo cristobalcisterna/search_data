@@ -21,7 +21,7 @@ RUN go build -o app
 
 
 # Exponer el puerto que utiliza la aplicación
-EXPOSE 8000
+EXPOSE 8001
 
 # Comando para ejecutar CompileDaemon y recompilar automáticamente en cambios
 CMD ["sh", "-c", "CompileDaemon --build='go build -o app .' --command=./app"]

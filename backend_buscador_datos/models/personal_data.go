@@ -9,16 +9,16 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type StudentsPersonalData struct {
+type PersonalData struct {
 	Rut  *string         `json:"rut"`
 	Data json.RawMessage `json:"data"`
 }
 
-func (p *StudentsPersonalData) GetByRut(db *pgxpool.Pool, rut string) (*StudentsPersonalData, error) {
+func (p *PersonalData) GetByRut(db *pgxpool.Pool, rut string) (*PersonalData, error) {
 	// Consulta dinámica para obtener todas las columnas como JSON
 	query := `
-		SELECT row_to_json(students_personal_data) 
-		FROM students_personal_data 
+		SELECT row_to_json(personal_data) 
+		FROM personal_data 
 		WHERE rut = $1
 	`
 
@@ -38,7 +38,7 @@ func (p *StudentsPersonalData) GetByRut(db *pgxpool.Pool, rut string) (*Students
 	}
 
 	// Retornar los datos obtenidos como JSON
-	return &StudentsPersonalData{
+	return &PersonalData{
 		Rut:  &rut,
 		Data: result,
 	}, nil

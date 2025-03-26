@@ -39,7 +39,7 @@ methods: {
       }
 
       // Realizamos la solicitud GET a la API para obtener los datos del RUT
-      const response = await fetch(`http://localhost:8001/api/students-personal-data/${this.aux_rut}`, {
+      const response = await fetch(`http://localhost:8001/api/personal-data/${this.aux_rut}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${localStorage.getItem("jwt")}`, // Incluye el JWT en la cabecera
