@@ -1,5 +1,5 @@
 <template>
-<!--
+
   <header class="header">
     <a
       v-if="auth.isAuthenticated"
@@ -35,7 +35,7 @@
       <span style="color:white;">{{ auth.currentUser?.email }}</span>
     </nav>
   </header>
--->
+
   <NuxtPage />
 </template>
 
@@ -49,14 +49,3 @@ const menuExpanded = ref(false)
 const userExpanded = ref(false)
 </script>
 
-<style>
-/* Aquí puedes mantener tus estilos globales o importar tu CSS */
-
-
-body {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f8f9fa;
-}
-</style>
