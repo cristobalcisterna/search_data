@@ -13,22 +13,6 @@ type PersonalDataController struct {
 	DB *pgxpool.Pool
 }
 
-/*
-func (c *PersonalDataController) GetByRut(w http.ResponseWriter, r *http.Request) {
-	rut := mux.Vars(r)["rut"]
-
-	dataModel := models.PersonalData{}
-	record, err := dataModel.GetByRut(c.DB, rut)
-
-	if err != nil {
-		http.Error(w, "No encontrado", http.StatusNotFound)
-		return
-	}
-
-	json.NewEncoder(w).Encode(record)
-}
-*/
-
 // Este es el controlador que manejará la consulta por RUT
 func (c *PersonalDataController) GetByRut(w http.ResponseWriter, r *http.Request) {
 	// Obtener el RUT de los parámetros de la URL
